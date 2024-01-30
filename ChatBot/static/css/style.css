@@ -1,0 +1,28 @@
+.head .navbar-toggler:focus{
+  box-shadow: none !important;
+}
+.head .navbar-toggler{
+  border: none !important;
+}
+.side-bar{
+  width: 260px;
+  height: calc(100vh - 56px);
+  position: sticky;
+  top: 56px;
+  left: 0;
+  /* margin-top: 56px; */
+}
+.side-bar .nav-link,.head .nav-link{
+  color: whitesmoke !important;
+  border-radius: 0px !important;
+  font-size: 14px !important;
+}
+.side-bar .nav-link:hover,.head .nav-link:hover{
+  background-color: rgb(92, 92, 92);
+}
+.nav-pills .nav-link.active,.head .nav-link.active{
+  background-color: rgb(92, 92, 92) !important;
+}
+.fade:not(.show){
+  display: none !important;
+}

@@ -1,0 +1,145 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  background-color: #e4e5e6;
+  font-family: "Roboto Condensed";
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0.75rem 1rem;
+  margin-bottom: 2px;
+  list-style: none;
+  background-color: #fff;
+}
+.breadcrumb .btn {
+  border-radius: 0%;
+}
+
+.bglight {
+  background-color: #f0f3f5;
+}
+.bgwhite {
+  height: 416px;
+  background-color: #fff;
+  border: 1px solid #c8ced3;
+}
+
+.text-chart {
+  cursor: pointer;
+  line-height: normal;
+}
+
+.roundcolor-1 {
+  background-color: rgb(0, 143, 251);
+  color: rgb(0, 143, 251);
+  height: 12px;
+  width: 12px;
+  border-width: 0px;
+  border-color: rgb(255, 255, 255);
+  border-radius: 12px;
+  display: inline-block;
+}
+.roundcolor-2 {
+  background-color: rgb(0, 227, 150);
+  color: rgb(0, 227, 150);
+  height: 12px;
+  width: 12px;
+  border-width: 0px;
+  border-color: rgb(255, 255, 255);
+  border-radius: 12px;
+  display: inline-block;
+}
+.roundcolor-3 {
+  background-color: rgb(254, 176, 25);
+  color: rgb(254, 176, 25);
+  height: 12px;
+  width: 12px;
+  border-width: 0px;
+  border-color: rgb(255, 255, 255);
+  border-radius: 12px;
+  display: inline-block;
+}
+.roundcolor-4 {
+  background-color: rgb(255, 69, 96);
+  color: rgb(255, 69, 96);
+  height: 12px;
+  width: 12px;
+  border-width: 0px;
+  border-color: rgb(255, 255, 255);
+  border-radius: 12px;
+  display: inline-block;
+}
+.roundcolor-5 {
+  background-color: rgb(119, 93, 208);
+  color: rgb(119, 93, 208);
+  height: 12px;
+  width: 12px;
+  border-width: 0px;
+  border-color: rgb(255, 255, 255);
+  border-radius: 12px;
+  display: inline-block;
+}
+.roundcolor-6 {
+  background-color: rgb(0, 143, 251);
+  color: rgb(0, 143, 251);
+  height: 12px;
+  width: 12px;
+  border-width: 0px;
+  border-color: rgb(255, 255, 255);
+  border-radius: 12px;
+  display: inline-block;
+}
+.roundcolor-7 {
+  background-color: rgb(0, 227, 150);
+  color: rgb(0, 227, 150);
+  height: 12px;
+  width: 12px;
+  border-width: 0px;
+  border-color: rgb(255, 255, 255);
+  border-radius: 12px;
+  display: inline-block;
+}
+
+.text-color {
+  color: rgb(55, 61, 63);
+  font-size: 12px;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.table .thead-dark th {
+  color: #fff;
+  background-color: #2f353a;
+  border-color: #40484f;
+}
+.app-footer {
+  margin-top: 25px;
+  padding: 20px !important;
+  padding: 0 1rem;
+  background: #f0f3f5;
+  border-top: 1px solid #c8ced3;
+}
+
+
+
+.input-group-prepend {
+  margin-right: -1px;
+}
+
+.filebody {
+  position: relative;
+}
+
+.fileinput {
+  margin: 0;
+  padding: 0;
+  display: none;
+}
+
+.mtfooter{
+    margin-top: 200px;
+}

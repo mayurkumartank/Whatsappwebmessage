@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static %}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MIS</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/MIS.css' %}" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+</head>
+
+<body>
+  <!-- {% for message in messages %}
+          <div class="alert {{ message.tags }} alert-dismissible" role="alert" id="messagepopup">
+            <p style="text-align: center;">{{ message }}</p>
+          </div>
+  {% endfor %} -->
+  <!-- navbar-start -->
+  {% if request.user.is_authenticated %}
+  
+  <nav class="navbar bg-body-tertiary fixed-top head shadow">
+    <div class="container-fluid justify-content-between px-lg-5">
+      <a class="navbar-brand" href="#">{{ request.user }}</a>
+      <button class="navbar-toggler d-lg-none d-block" type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="d-flex justify-content-center align-items-center d-lg-block d-none">
+        {% if request.user.user_image %}
+          <img src="{{request.user.user_image.url}}" width="50px" height="50px" class="rounded-circle mx-2" alt="" />
+        {% else %}
+          <img src="{% static '6.jpg' %}" width="50px" height="50px" class="rounded-circle mx-2" alt="" />
+        {% endif %}
+        <a href="/logout/"><button class="btn btn-outline-warning mx-2">Log out</button></a>
+      </div>
+    </div>
+  </nav>
+  {% else %}
+    {% include "login.html" %}
+  {% endif %}
+  <!-- navbar-end -->
+  <!-- main-section-start -->
+  {% if request.user.is_authenticated %}
+  <div class="d-flex align-items-start" style="margin-top: 56px">
+    <!-- sidebar-start -->
+    <div class="nav flex-column nav-pills me-3 d-lg-block d-none bg-dark side-bar pt-3 px-2" id="v-pills-tab"
+      role="tablist" aria-orientation="vertical">
+      <button class="nav-link px-5 w-100 active py-3 my-1" id="v-pills-home-tab" data-bs-toggle="pill"
+        data-bs-target="#home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">
+        Home
+      </button>
+      <button class="nav-link px-5 w-100 py-3 my-1" id="v-pills-home-tab" data-bs-toggle="pill"
+        data-bs-target="#dashboard" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">
+        Dashboard
+      </button>
+      <button class="nav-link px-5 w-100 py-3 my-1" id="v-pills-profile-tab" data-bs-toggle="pill"
+        data-bs-target="#wappcampaign" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">
+        Wapp Campaign
+      </button>
+      <button class="nav-link px-5 w-100 py-3 my-1" id="v-pills-messages-tab" data-bs-toggle="pill"
+        data-bs-target="#buttoncampaign" type="button" role="tab" aria-controls="v-pills-messages"
+        aria-selected="false">
+        Button Campaign
+      </button>
+      <button class="nav-link px-5 w-100 py-3 my-1" id="v-pills-settings-tab" data-bs-toggle="pill"
+        data-bs-target="#wappreport" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+        Wapp Report
+      </button>
+      <button class="nav-link px-5 w-100 py-3 my-1" id="v-pills-settings-tab" data-bs-toggle="pill"
+        data-bs-target="#registerwapp" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+        Register Wapp
+      </button>
+      <button class="nav-link px-5 w-100 py-3 my-1" id="v-pills-settings-tab" data-bs-toggle="pill"
+        data-bs-target="#wappchannel" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+        Wapp Channel
+      </button>
+      <button class="nav-link px-5 w-100 py-3 my-1" id="v-pills-settings-tab" data-bs-toggle="pill"
+        data-bs-target="#credithistory" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+        Credit History
+      </button>
+      <button class="nav-link px-5 w-100 py-3 my-1" id="v-pills-settings-tab" data-bs-toggle="pill"
+        data-bs-target="#changepassword" type="button" role="tab" aria-controls="v-pills-settings"
+        aria-selected="false">
+        Change Password
+      </button>
+      <button class="nav-link px-5 w-100 py-3 my-1" id="v-pills-settings-tab" data-bs-toggle="pill"
+        data-bs-target="#manageapikey" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+        Manage APIKey
+      </button>
+    </div>
+    <!-- sidebar-end -->
+    <!-- content-section-start -->
+    <div class="tab-content w-100" id="v-pills-tabContent">
+      <!--============================================ home-start======================================== -->
+      <div class="tab-pane fade show active pt-3 d-flex flex-column justify-content-between" id="home" role="tabpanel"
+        aria-labelledby="v-pills-home-tab" style="min-height: calc(100vh - 56px)" tabindex="0">
+        <div class="">
+          <div>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                <button class="btn btn-square btn-sm btn-primary" type="button">
+                  Credit</button><button type="button" class="btn btn-square btn-sm btn-success">
+                  W-API:<b>100</b>
+                </button>
+              </li>
+            </ol>
+          </div>
+
+          <div class="row m-0">
+            <div class="col-sm-6">
+              <div class="card bgwhite">
+                <div class="bglight card-header">
+                  <div class="dropdown">
+                    <button class="btn btn-success toggle font_Size" type="button" data-bs-toggle="dropdown"
+                      aria-expanded="false">
+                      <i class="fa-solid fa-calendar-days"></i>
+                      December 31, 2023-December 31,2023
+                    </button>
+                    <ul class="dropdown-menu font_Size text-center">
+                      <li><a class="dropdown-item" href="#">Today</a></li>
+                      <li><a class="dropdown-item" href="#">Yesterday</a></li>
+                      <li>
+                        <a class="dropdown-item" href="#">Last 7 Days</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="#">Last 30 Days</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="#">This Month</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="#">Last Month</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="#">Custom Range</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="card-body d-flex justify-content-end">
+                  <div class="me-5 mt-5">
+                    <div class="text-chart">
+                      <span class="roundcolor-1"></span>
+                      <span class="text-color">DILIVRD</span>
+                    </div>
+                    <div class="text-chart">
+                      <span class="roundcolor-2"></span>
+                      <span class="text-color">EXPIRED</span>
+                    </div>
+                    <div class="text-chart">
+                      <span class="roundcolor-3"></span>
+                      <span class="text-color">UNDELIV</span>
+                    </div>
+                    <div class="text-chart">
+                      <span class="roundcolor-4"></span>
+                      <span class="text-color">REJECTED</span>
+                    </div>
+                    <div class="text-chart">
+                      <span class="roundcolor-5"></span>
+                      <span class="text-color">SENT</span>
+                    </div>
+                    <div class="text-chart">
+                      <span class="roundcolor-6"></span>
+                      <span class="text-color">UNKNOWN</span>
+                    </div>
+                    <div class="text-chart">
+                      <span class="roundcolor-7"></span>
+                      <span class="text-color">PENDDING</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div></div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-body">
+                  <table class="table table-responsive-sm table-bordered">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th>Status</th>
+                        <th>Value</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbody">
+                      <tr>
+                        <td>Total</td>
+                        <td>0</td>
+                      </tr>
+                      <tr>
+                        <td>DELIVRD</td>
+                        <td>0</td>
+                      </tr>
+                      <tr>
+                        <td>EXPIRED</td>
+                        <td>0</td>
+                      </tr>
+                      <tr>
+                        <td>UNDELIV</td>
+                        <td>0</td>
+                      </tr>
+                      <tr>
+                        <td>REJECTED</td>
+                        <td>0</td>
+                      </tr>
+                      <tr>
+                        <td>SENT</td>
+                        <td>0</td>
+                      </tr>
+                      <tr>
+                        <td>UNKNOWN</td>
+                        <td>0</td>
+                      </tr>
+                      <tr>
+                        <td>PENDDING</td>
+                        <td>0</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="app-footer d-flex flex-wrap align-items-center">
+          <div>
+            <a href="#"></a>
+            <span>© 2020-2021 .</span>
+          </div>
+          <div class="ms-auto">
+            <span>Powered by</span>
+          </div>
+        </footer>
+      </div>
+      <!--============================================ home-end======================================== -->
+
+      <!--============================================ dashboard-start======================================== -->
+      <div class="tab-pane fade pt-3 d-flex flex-column justify-content-between" id="dashboard" role="tabpanel"
+        aria-labelledby="v-pills-home-tab" style="min-height: calc(100vh - 56px)" tabindex="0">
+        <div class="">
+          <div>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                <button class="btn btn-square btn-sm btn-primary" type="button">
+                  Credit</button><button type="button" class="btn btn-square btn-sm btn-success">
+                  W-API:<b>100</b>
+                </button>
+              </li>
+            </ol>
+          </div>
+
+          <div class="row m-0">
+            <div class="col-sm-6">
+              <div class="card bgwhite">
+                <div class="bglight card-header">
+                  <div class="dropdown">
+                    <button class="btn btn-success toggle font_Size" type="button" data-bs-toggle="dropdown"
+                      aria-expanded="false">
+                      <i class="fa-solid fa-calendar-days"></i>
+                      December 31, 2023-December 31,2023
+                    </button>
+                    <ul class="dropdown-menu font_Size text-center">
+                      <li><a class="dropdown-item" href="#">Today</a></li>
+                      <li><a class="dropdown-item" href="#">Yesterday</a></li>
+                      <li>
+                        <a class="dropdown-item" href="#">Last 7 Days</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="#">Last 30 Days</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="#">This Month</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="#">Last Month</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="#">Custom Range</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="card-body d-flex justify-content-end">
+                  <div class="me-5 mt-5">
+                    <div class="text-chart">
+                      <span class="roundcolor-1"></span>
+                      <span class="text-color">ACTIVEWA</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div></div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-body">
+                  <table class="table table-responsive-sm table-bordered">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th>Status</th>
+                        <th>Value</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbody">
+                      <tr>
+                        <td>Total</td>
+                        <td>0</td>
+                      </tr>
+                      <tr>
+                        <td>ACTIVEWA</td>
+                        <td>0</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="app-footer d-flex flex-wrap align-items-center">
+          <div>
+            <a href="#"></a>
+            <span>© 2020-2021 .</span>
+          </div>
+          <div class="ms-auto">
+            <span>Powered by</span>
+          </div>
+        </footer>
+      </div>
+      <!--============================================ dashboard-end======================================== -->
+
+      <!--============================================ wappcampaign-start======================================== -->
+
+      <div class="tab-pane fade pt-3 d-flex flex-column justify-content-between" id="wappcampaign" role="tabpanel"
+        aria-labelledby="v-pills-profile-tab" tabindex="0" style="min-height: calc(100vh - 56px)">
+        <div>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <button class="btn btn-square btn-sm btn-primary" type="button">
+                Credit</button><button type="button" class="btn btn-square btn-sm btn-success">
+                W-API:<b>100</b>
+              </button>
+            </li>
+          </ol>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-header bglight">
+              <strong style="font-size: 20px"><i class="fa-solid fa-comment-dots"></i> Wapp Message</strong>
+            </div>
+            <div class="card-body">
+              <form>
+                <div class="row">
+                  <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white bg-danger">Campaign Name</span>
+                      </div>
+                      <input class="form-control required" style="width: 200px" id="campname" name="campname"
+                        type="text" />
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <span id="totalpno"></span>
+                  </div>
+                  <div class="col-lg-3 col-md-12 col-sm-12">
+                    <h5>Numbers:</h5>
+                    <textarea rows="17" class="form-control col-12 col-sm-12 border border-success"
+                      style="font-size: 16px" id="tonumber" name="tonumber" type="text"></textarea>
+                  </div>
+
+                  <div class="col-lg-9 col-md-12 col-sm-12">
+                    <div class="row">
+                      <div class="col-12">
+                        <h5>Message:</h5>
+                        <textarea rows="6" class="form-control col-12 col-sm-12 border border-success" id="msg"
+                          name="msg" type="text"></textarea>
+                      </div>
+
+                      <div class="col-12 mt-2">
+                        <div class="card">
+                          <div class="card-header text-white bg-info">
+                            Image Upload
+
+                            <h7 style="font-size: 12px">(Max file size 3 MB.)</h7>
+                          </div>
+
+                          <div class="card-body p-0">
+                            <div class="bglight filebody" style="height: 76px">
+                              <div class="fileinput">
+                                <input type="file" id="filepond" class="w-100 h-auto" />
+                              </div>
+
+                              <div class="z-1 d-block text-center">
+                                <label for="filepond" class="text-center mt-2 w-100 h-100">Drag &amp; Drop image
+                                  files(maximum 4)or<br />
+                                  <span class="filepond--label-action" tabindex="0">
+                                    Browse Image</span></label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6 mt-2">
+                        <div class="card">
+                          <div class="card-header text-white bg-success">
+                            Video Upload
+
+                            <h7 style="font-size: 12px">(Max file size 3 MB.)</h7>
+                          </div>
+
+                          <div class="card-body p-0">
+                            <div class="bglight filebody" style="height: 76px">
+                              <div class="fileinput">
+                                <input type="file" id="filepond" class="w-100 h-auto" />
+                              </div>
+
+                              <div class="z-1 d-block text-center">
+                                <label for="filepond" class="text-center mt-2 w-100 h-100">Drag &amp; Drop Video
+                                  files(max size:1 MB)
+                                  or
+                                  <br />
+                                  <span class="filepond--label-action" tabindex="0">
+                                    Browse Video
+                                  </span></label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6 mt-2">
+                        <div class="card">
+                          <div class="card-header text-white bg-danger">
+                            PDF
+                            <h7 style="font-size: 12px">(Max file size 2 MB.)</h7>
+                          </div>
+
+                          <div class="card-body p-0">
+                            <div class="bglight filebody" style="height: 76px">
+                              <div class="fileinput">
+                                <input type="file" id="filepond" class="w-100 h-auto" />
+                              </div>
+
+                              <div class="z-1 d-block text-center">
+                                <label for="filepond" class="text-center mt-2 w-100 h-100">Drag &amp; Drop PDF files(max
+                                  size:1 MB) or
+                                  <br />
+                                  <span class="" tabindex="0">
+                                    Browse PDF
+                                  </span></label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <button class="btn btn-primary mt-1" id="btnsndnow" type="button">
+                      Send Now
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <footer class="app-footer d-flex flex-wrap align-items-center">
+          <div>
+            <a href="#"></a>
+            <span>© 2020-2021 .</span>
+          </div>
+          <div class="ms-auto">
+            <span>Powered by</span>
+          </div>
+        </footer>
+      </div>
+      <!--============================================ wappcampaign-end======================================== -->
+
+      <!--============================================ buttoncampaign-start======================================== -->
+
+      <div class="tab-pane fade pt-3 d-flex flex-column justify-content-between" id="buttoncampaign" role="tabpanel"
+        aria-labelledby="v-pills-messages-tab" tabindex="0" style="min-height: calc(100vh - 56px)">
+        <div>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <button class="btn btn-square btn-sm btn-primary" type="button">
+                Credit</button><button type="button" class="btn btn-square btn-sm btn-success">
+                W-API:<b>100</b>
+              </button>
+            </li>
+          </ol>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-header bglight">
+              <strong style="font-size: 20px"> Button Campaign</strong>
+            </div>
+            <div class="card-body">
+              <form>
+                <div class="row">
+                  <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text text-white bg-danger">Campaign Name</span>
+                      </div>
+                      <input class="form-control required" style="width: 200px" id="campname" name="campname"
+                        type="text" />
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <span id="totalpno"></span>
+                  </div>
+                  <div class="col-lg-3 col-md-12 col-sm-12">
+                    <h5>Numbers:</h5>
+                    <textarea rows="17" class="form-control col-12 col-sm-12 border border-success"
+                      style="font-size: 16px" id="tonumber" name="tonumber" type="text"></textarea>
+                  </div>
+
+                  <div class="col-lg-9 col-md-12 col-sm-12">
+                    <div class="row">
+                      <div class="col-12">
+                        <h5>Message:</h5>
+                        <textarea rows="6" class="form-control col-12 col-sm-12 border border-success" id="msg"
+                          name="msg" type="text"></textarea>
+                      </div>
+
+                      <div class="col-12">
+                        <div class="input-group" style="margin-top: 10px">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text bg-success text-white">Link</span>
+                          </div>
+                          <input type="text" class="form-control col-2" id="lcap" value="Visit Now" />
+                          <input type="text" class="form-control w-50" id="link" placeholder="http://" />
+                        </div>
+                      </div>
+
+                      <div class="col-12">
+                        <div class="input-group" style="margin-top: 10px; margin-bottom: 10px">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text bg-danger text-white">Number</span>
+                          </div>
+                          <input type="text" class="form-control" id="cbtncap" value="Call Now" />
+                          <input type="number" class="form-control w-50" id="callno" placeholder="10 Digit number" />
+                        </div>
+                      </div>
+
+                      <div class="col-12 mt-2">
+                        <div class="card">
+                          <div class="card-header text-white bg-info">
+                            Image Upload
+
+                            <h7 style="font-size: 12px">(Max file size 3 MB.)</h7>
+                          </div>
+
+                          <div class="card-body p-0">
+                            <div class="bglight filebody" style="height: 76px">
+                              <div class="fileinput">
+                                <input type="file" id="filepond" class="w-100 h-auto" />
+                              </div>
+
+                              <div class="z-1 d-block text-center">
+                                <label for="filepond" class="text-center mt-2 w-100 h-100">Drag &amp; Drop image
+                                  files(maximum 4)or<br />
+                                  <span class="filepond--label-action" tabindex="0">
+                                    Browse Image</span></label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6 mt-2">
+                        <div class="card">
+                          <div class="card-header text-white bg-success">
+                            Video Upload
+
+                            <h7 style="font-size: 12px">(Max file size 3 MB.)</h7>
+                          </div>
+
+                          <div class="card-body p-0">
+                            <div class="bglight filebody" style="height: 76px">
+                              <div class="fileinput">
+                                <input type="file" id="filepond" class="w-100 h-auto" />
+                              </div>
+
+                              <div class="z-1 d-block text-center">
+                                <label for="filepond" class="text-center mt-2 w-100 h-100">Drag &amp; Drop Video
+                                  files(max size:1 MB)
+                                  or
+                                  <br />
+                                  <span class="filepond--label-action" tabindex="0">
+                                    Browse Video
+                                  </span></label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6 mt-2">
+                        <div class="card">
+                          <div class="card-header text-white bg-danger">
+                            PDF
+                            <h7 style="font-size: 12px">(Max file size 2 MB.)</h7>
+                          </div>
+
+                          <div class="card-body p-0">
+                            <div class="bglight filebody" style="height: 76px">
+                              <div class="fileinput">
+                                <input type="file" id="filepond" class="w-100 h-auto" />
+                              </div>
+
+                              <div class="z-1 d-block text-center">
+                                <label for="filepond" class="text-center mt-2 w-100 h-100">Drag &amp; Drop PDF files(max
+                                  size:1 MB) or
+                                  <br />
+                                  <span class="" tabindex="0">
+                                    Browse PDF
+                                  </span></label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <button class="btn btn-primary mt-1" id="btnsndnow" type="button">
+                      Send Now
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <footer class="app-footer d-flex flex-wrap align-items-center">
+          <div>
+            <a href="#"></a>
+            <span>© 2020-2021 .</span>
+          </div>
+          <div class="ms-auto">
+            <span>Powered by</span>
+          </div>
+        </footer>
+      </div>
+      <!--============================================ buttoncampaign-end======================================== -->
+
+      <!--============================================ wappreport-start======================================== -->
+      <div class="tab-pane fade pt-3 d-flex flex-column justify-content-between" id="wappreport" role="tabpanel"
+        aria-labelledby="v-pills-settings-tab" tabindex="0" style="min-height: calc(100vh - 56px)">
+        <div class="WAPPpage">
+          <div class="bg-white pb-3">
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+              <button type="button" class="btn btn-primary rounded-0 p-1 font_Size">
+                Credit
+              </button>
+              <button type="button" class="btn btn-success rounded-0 p-1 font_Size">
+                W-API-<b>100</b>
+              </button>
+            </div>
+          </div>
+
+          <div class="p-2 pb-5">
+            <div class="border border-1 border-secondary-subtle">
+              <div class="bgcolour border border-secondary-subtle p-1">
+                <div class="row m-0">
+                  <div class="col-md-2 col-sm-6 p-2">
+                    <b>Whatsapp Report</b>
+                  </div>
+                  <div class="col-md-4 col-sm-6 p-1">
+                    <div class="pb-1">
+                      <button type="button" class="btn btn-primary p-1 font_Size">
+                        Download Report CSV
+                      </button>
+                    </div>
+                    <div class="dropdown">
+                      <button class="btn btn-success toggle font_Size" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        December 31, 2023-December 31,2023
+                      </button>
+                      <ul class="dropdown-menu font_Size text-center">
+                        <li><a class="dropdown-item" href="#">Today</a></li>
+                        <li>
+                          <a class="dropdown-item" href="#">Yesterday</a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="#">Last 7 Days</a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="#">Last 30 Days</a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="#">This Month</a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="#">Last Month</a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="#">Custom Range</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="bg-white font_Size">
+                <div class="p-3">
+                  <span>Show </span>
+                  <select class="form-control w-auto d-inline">
+                    <option value="10">10</option>
+                    <option value="10">25</option>
+                    <option value="10">50</option>
+                    <option value="10">100</option>
+                    <option value="10">200</option>
+                    <option value="10">500</option>
+                  </select>
+                  <span> entries </span>
+                </div>
+                <div class="p-3 table-responsive-sm">
+                  <table class="w-100 table-bordered border-secondary-subtle">
+                    <thead class="bg bg-primary text-white">
+                      <tr>
+                        <th class="p-2"></th>
+                        <th class="p-2">Campname</th>
+                        <th class="p-2">Number</th>
+                        <th class="p-2">Message</th>
+                        <th class="p-2">Status</th>
+                        <th class="p-2">Submit Date</th>
+                        <th class="p-2">Download</th>
+                      </tr>
+                    </thead>
+                    <tbody class="bgcolour">
+                      <tr>
+                        <td colspan="7" class="text-center p-2">
+                          No data available in table fghjkl;
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="d-flex justify-content-between pt-4 p-3">
+                  <div>Showing 0 to 0 of entries</div>
+                  <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                    <button type="button" class="border-1 bg-white p-2 font_Size text-secondary">
+                      Previous
+                    </button>
+                    <button type="button" class="border-1 bg-white p-2 font_Size text-secondary">
+                      Next
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer class="app-footer d-flex flex-wrap align-items-center">
+          <div>
+            <a href="#"></a>
+            <span>© 2020-2021 .</span>
+          </div>
+          <div class="ms-auto">
+            <span>Powered by</span>
+          </div>
+        </footer>
+      </div>
+      <!--============================================ wappreport-end======================================== -->
+
+      <!--============================================ registerwapp-start======================================== -->
+      <div class="tab-pane fade pt-3 d-flex flex-column justify-content-between" id="registerwapp" role="tabpanel"
+        aria-labelledby="v-pills-settings-tab" style="min-height: calc(100vh - 56px)" tabindex="0">
+        <div>
+          <div>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                <button class="btn btn-square btn-sm btn-primary" type="button">
+                  Credit</button><button type="button" class="btn btn-square btn-sm btn-success">
+                  W-API:<b>100</b>
+                </button>
+              </li>
+            </ol>
+          </div>
+
+          <div class="container-fluid">
+            <div id="ui-view">
+              <div>
+                <div class="animated fadeIn">
+                  <div class="card">
+                    <div class="card-header bglight">
+                      <strong> Register WA</strong>
+                    </div>
+
+                    <div class="card-body">
+                      <div class="row">
+                        <label for="mnumber" class="col-lg-2 col-form-label">Identification Name:
+                        </label>
+
+                        <input class="form-control col-lg-2" type="text" name="mnumber" id="mnumber"
+                          placeholder="MI Note 8" />
+
+                        <button type="button" class="btn btn-primary col-lg-2 mt-2">
+                          Register &amp; Scan
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="app-footer d-flex flex-wrap align-items-center mtfooter">
+          <div>
+            <a href="#"></a>
+            <span>© 2020-2021 .</span>
+          </div>
+          <div class="ms-auto">
+            <span>Powered by</span>
+          </div>
+        </footer>
+      </div>
+      <!--============================================ registerwapp-end======================================== -->
+
+      <!--============================================ wappchannel-strat======================================== -->
+      <div class="tab-pane fade pt-3 d-flex flex-column justify-content-between" id="wappchannel" role="tabpanel"
+        style="min-height: calc(100vh - 56px)" aria-labelledby="v-pills-settings-tab" tabindex="0">
+        <div class="WAPPpage">
+          <div class="bg-white pb-3">
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+              <button type="button" class="btn btn-primary rounded-0 p-1 font_Size">
+                Credit
+              </button>
+              <button type="button" class="btn btn-success rounded-0 p-1 font_Size">
+                W-API-<b>100</b>
+              </button>
+            </div>
+          </div>
+
+          <div class="p-2 pb-5">
+            <div class="border border-1 border-secondary-subtle">
+              <div class="bgcolour border border-secondary-subtle p-2 ps-3 font_Size">
+                <div class="p-2"><b>Wapp CHANNEL</b></div>
+              </div>
+              <div class="bg-white font_Size">
+                <div class="row m-0">
+                  <div class="p-3 col-md-9 col-sm-12">
+                    <span class="">Show </span>
+                    <select class="form-control w-auto d-inline">
+                      <option value="10">10</option>
+                      <option value="10">25</option>
+                      <option value="10">50</option>
+                      <option value="10">100</option>
+                      <option value="10">200</option>
+                      <option value="10">500</option>
+                    </select>
+                    <span> entries </span>
+                  </div>
+
+                  <div class="p-3 col-md-3 col-sm-12">
+                    <form>
+                      <div class="d-flex">
+                        <label for="text" class="pt-1 m-1"> search: </label>
+                        <input type="search" name="" id="" class="form-control form-control-sm" />
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="p-3 table-responsive-sm">
+                  <table class="w-100 table-bordered border-secondary-subtle">
+                    <thead class="bg bg-primary text-white">
+                      <tr>
+                        <th class="p-2"></th>
+                        <th class="p-2">
+                          <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                              <b>Number</b>
+                            </div>
+                            <div class="col-md-6 col-sm-12 text-md-end text-sm-center">
+                              <span><i class="fa-solid fa-arrow-up-long tableicon"></i></span>
+                              <span><i class="fa-solid fa-arrow-down-long tableicon"></i></span>
+                            </div>
+                          </div>
+                        </th>
+                        <th class="p-2">
+                          <div class="row">
+                            <div class="col-md-6 col-sm-12"><b>Name</b></div>
+                            <div class="col-md-6 col-sm-12 text-md-end text-sm-center">
+                              <span><i class="fa-solid fa-arrow-up-long tableicon"></i></span>
+                              <span><i class="fa-solid fa-arrow-down-long tableicon"></i></span>
+                            </div>
+                          </div>
+                        </th>
+                        <th class="p-2">
+                          <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                              <b>Createdon</b>
+                            </div>
+                            <div class="col-md-6 col-sm-12 text-md-end text-sm-center">
+                              <span><i class="fa-solid fa-arrow-up-long tableicon"></i></span>
+                              <span><i class="fa-solid fa-arrow-down-long tableicon"></i></span>
+                            </div>
+                          </div>
+                        </th>
+                        <th class="p-2">
+                          <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                              <b>Status</b>
+                            </div>
+                            <div class="col-md-6 col-sm-12 text-md-end text-sm-center">
+                              <span><i class="fa-solid fa-arrow-up-long tableicon"></i></span>
+                              <span><i class="fa-solid fa-arrow-down-long tableicon"></i></span>
+                            </div>
+                          </div>
+                        </th>
+                        <th class="p-2">
+                          <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                              <b>Channel</b>
+                            </div>
+                            <div class="col-md-6 col-sm-12 text-md-end text-sm-center">
+                              <span><i class="fa-solid fa-arrow-up-long tableicon"></i></span>
+                              <span><i class="fa-solid fa-arrow-down-long tableicon"></i></span>
+                            </div>
+                          </div>
+                        </th>
+                        <th class="p-2">
+                          <div class="row">
+                            <div class="col-md-6 col-sm-12"><b>Ping</b></div>
+                            <div class="col-md-6 col-sm-12 text-md-end text-sm-center">
+                              <span><i class="fa-solid fa-arrow-up-long tableicon"></i></span>
+                              <span><i class="fa-solid fa-arrow-down-long tableicon"></i></span>
+                            </div>
+                          </div>
+                        </th>
+                        <th class="p-2">
+                          <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                              <b>Action</b>
+                            </div>
+                            <div class="col-md-6 col-sm-12 text-md-end text-sm-center">
+                              <span><i class="fa-solid fa-arrow-up-long tableicon"></i></span>
+                              <span><i class="fa-solid fa-arrow-down-long tableicon"></i></span>
+                            </div>
+                          </div>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody class="bgcolour">
+                      <tr>
+                        <td colspan="8" class="text-center p-2">
+                          No data available in table
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="d-flex justify-content-between pt-1 p-3">
+                  <div>Showing 0 to 0 of entries</div>
+                  <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                    <button type="button" class="border-1 bg-white p-2 font_Size text-secondary">
+                      Previous
+                    </button>
+                    <button type="button" class="border-1 bg-white p-2 font_Size text-secondary">
+                      Next
+                    </button>
+                  </div>
+                </div>
+                <div class="bgcolour border border-secondary-subtle p-1">
+                  <div class="p-2">2 days ago</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer class="app-footer d-flex flex-wrap align-items-center">
+          <div>
+            <a href="#"></a>
+            <span>© 2020-2021 .</span>
+          </div>
+          <div class="ms-auto">
+            <span>Powered by</span>
+          </div>
+        </footer>
+      </div>
+      <!--============================================ wappchannel-end======================================== -->
+
+      <!--============================================ credithistory-strat======================================== -->
+      <div class="tab-pane fade pt-3 d-flex flex-column justify-content-between" id="credithistory" role="tabpanel"
+        style="min-height: calc(100vh - 56px)" aria-labelledby="v-pills-settings-tab" tabindex="0">
+        <div class="WAPPpage">
+          <div class="bg-white pb-3">
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+              <button type="button" class="btn btn-primary rounded-0 p-1 font_Size">
+                Credit
+              </button>
+              <button type="button" class="btn btn-success rounded-0 p-1 font_Size">
+                W-API-<b>100</b>
+              </button>
+            </div>
+          </div>
+
+          <div class="p-2 pb-5">
+            <div class="border border-1 border-secondary-subtle">
+              <div class="row bgcolour border border-secondary-subtle p-2 m-0">
+                <div class="col-md-4 col-sm-12">
+                  <div class="p-2 font_Size"><b>Credit Audit</b></div>
+                </div>
+                <div class="col-md-4 col-sm-12 p-1">
+                  <select class="form-select font_Size w-75 p-1" aria-label="Default select example">
+                    <option value="ALL">ALL</option>
+                    <option selected value="Credit/Debit">
+                      Credit/Debit
+                    </option>
+                    <option value="REFUND">REFUND</option>
+                    <option value="DEBIT">DEBIT</option>
+                    <option value="CREDIT">CREDIT</option>
+                  </select>
+                </div>
+                <div class="col-md-4 col-sm-12 p-1">
+                  <div class="dropdown text-end">
+                    <button class="btn btn-success toggle font_Size" type="button" data-bs-toggle="dropdown"
+                      aria-expanded="false">
+                      <i class="fa-solid fa-calendar-days"></i>
+                      December 31, 2023-December 31,2023
+                    </button>
+                    <ul class="dropdown-menu font_Size text-center">
+                      <li><a class="dropdown-item" href="#">Today</a></li>
+                      <li><a class="dropdown-item" href="#">Yesterday</a></li>
+                      <li>
+                        <a class="dropdown-item" href="#">Last 7 Days</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="#">Last 30 Days</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="#">This Month</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="#">Last Month</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="#">Custom Range</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="bg-white font_Size">
+                <div class="row m-0">
+                  <div class="p-3 col-md-9 col-sm-12">
+                    <span class="">Show </span>
+                    <select class="form-control w-auto d-inline">
+                      <option value="10">10</option>
+                      <option value="10">25</option>
+                      <option value="10">50</option>
+                      <option value="10">100</option>
+                      <option value="10">200</option>
+                      <option value="10">500</option>
+                    </select>
+                    <span> entries </span>
+                  </div>
+
+                  <div class="p-3 col-md-3 col-sm-12">
+                    <form>
+                      <div class="d-flex">
+                        <label for="text" class="pt-1 m-1"> search: </label>
+                        <input type="search" name="" id="" class="form-control form-control-sm" />
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="p-3 table-responsive-sm">
+                  <table class="w-100 table-bordered border-secondary-subtle">
+                    <thead class="bg bg-primary text-white">
+                      <tr>
+                        <th class="p-2">ID</th>
+                        <th class="p-2">UserName</th>
+                        <th class="p-2">ServiceName</th>
+                        <th class="p-2">Credit</th>
+                        <th class="p-2">Type</th>
+                        <th class="p-2">TransTime</th>
+                        <th class="p-2">Old Credit</th>
+                        <th class="p-2">New Credit</th>
+                        <th class="p-2">sysnotes</th>
+                        <th class="p-2">Notes</th>
+                      </tr>
+                    </thead>
+                    <tbody class="bgcolour">
+                      <tr>
+                        <td colspan="10" class="text-center p-2">
+                          No data available in table fghjkl;
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="d-flex justify-content-between pt-1 p-3">
+                  <div>Showing 0 to 0 of entries</div>
+                  <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                    <button type="button" class="border-1 bg-white p-2 font_Size text-secondary">
+                      Previous
+                    </button>
+                    <button type="button" class="border-1 bg-white p-2 font_Size text-secondary">
+                      Next
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer class="app-footer d-flex flex-wrap align-items-center">
+          <div>
+            <a href="#"></a>
+            <span>© 2020-2021 .</span>
+          </div>
+          <div class="ms-auto">
+            <span>Powered by</span>
+          </div>
+        </footer>
+      </div>
+      <!--============================================ credithistory-end======================================== -->
+
+      <!--============================================ changepassword-strat======================================== -->
+      <div class="tab-pane fade pt-3 d-flex flex-column justify-content-between" id="changepassword" role="tabpanel"
+        style="min-height: calc(100vh - 56px)" aria-labelledby="v-pills-settings-tab" tabindex="0">
+        <div class="WAPPpage">
+          <div class="bg-white pb-3">
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+              <button type="button" class="btn btn-primary rounded-0 p-1 font_Size">
+                Credit
+              </button>
+              <button type="button" class="btn btn-success rounded-0 p-1 font_Size">
+                W-API-<b>100</b>
+              </button>
+            </div>
+          </div>
+
+          <div class="p-2 pb-5">
+            <div class="border border-1 border-secondary-subtle">
+              <div class="bgcolour border border-secondary-subtle p-2 ps-3 font_Size">
+                <div class="p-2"><b> Change Password</b></div>
+              </div>
+              <div class="bg-white font_Size">
+                <div class="p-3">
+                  <form>
+                    <div class="p-2">
+                      <label for="Password">CurrentPassword</label>
+                      <input type="password" name="" placeholder="Enter Current Password"
+                        class="form-control font_Size p-2 my-1 w-auto" />
+                    </div>
+                    <div class="p-2">
+                      <label for="Password">New Password</label>
+                      <input type="password" name="" placeholder="Enter New Password"
+                        class="form-control font_Size p-2 my-1 w-auto" />
+                    </div>
+                    <div class="p-2">
+                      <label for="Password">Confirm Password</label>
+                      <input type="password" name="" placeholder="Enter Password Again"
+                        class="form-control font_Size p-2 my-1 w-auto" />
+                    </div>
+                    <div class="p-2">
+                      <button type="button" class="btn btn-primary rounded rounded-1">
+                        <span> <i class="fa-regular fa-circle-dot"></i></span>
+                        Change Password
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer class="app-footer d-flex flex-wrap align-items-center">
+          <div>
+            <a href="#"></a>
+            <span>© 2020-2021 .</span>
+          </div>
+          <div class="ms-auto">
+            <span>Powered by</span>
+          </div>
+        </footer>
+      </div>
+
+      <!--============================================ changepassword-end======================================== -->
+
+      <!--============================================ manageapikey-strat======================================== -->
+      <div class="tab-pane fade pt-3 d-flex flex-column justify-content-between" id="manageapikey" role="tabpanel"
+        style="min-height: calc(100vh - 56px)" aria-labelledby="v-pills-settings-tab" tabindex="0">
+        <div class="WAPPpage">
+          <div class="bg-white pb-3 ">
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+              <button type="button" class="btn btn-primary rounded-0 p-1 font_Size">Credit</button>
+              <button type="button" class="btn btn-success rounded-0 p-1 font_Size">W-API-<b>100</b></button>
+            </div>
+          </div>
+
+          <div class="p-2 ">
+            <div class="border border-1 border-secondary-subtle">
+              <div class="bgcolour border border-secondary-subtle p-2 ps-3 font_Size">
+                <div class="p-1"><b> Generate API Key</b></div>
+              </div>
+              <div class="bg-white  p-3">
+                <button type="button" class="btn btn-primary font_Size"> <span><i class="fa-regular fa-circle-dot"></i>
+                  </span> Generate New API KEY</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-2 ">
+            <div class="border border-1 border-secondary-subtle">
+              <div class="bgcolour border border-secondary-subtle p-2 ps-3 font_Size">
+                <div class="p-2"> Manage API Key</div>
+              </div>
+              <div class="bg-white  p-3">
+                <div class="row m-0 ">
+
+                  <div class=" col-md-9 col-sm-12 font_Size"><span>Show </span>
+                    <select class="form-control w-auto d-inline">
+                      <option value="10">10 </option>
+                      <option value="10">25</option>
+                      <option value="10">50</option>
+                      <option value="10">100</option>
+                      <option value="10">200</option>
+                      <option value="10">500</option>
+                    </select>
+                    <span> entries </span>
+                  </div>
+
+                  <div class=" col-md-3 col-sm-12 ">
+                    <form>
+                      <div class="d-flex">
+                        <label for="text" class="pt-1 m-1 font_Size"> search: </label>
+                        <input type="search" name="" id="" class="form-control form-control-sm ">
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                <div class="p-2 table-responsive-sm font_Size">
+                  <table class="  w-100 table-bordered border-secondary-subtle ">
+                    <thead class="bg bg-primary text-white ">
+                      <tr>
+
+                        <th class="p-2">
+                          <div class="row">
+                            <div class="col-md-6 col-sm-12"><b>Key</b></div>
+                            <div class="col-md-6 col-sm-12 text-md-end text-sm-center">
+                              <span><i class="fa-solid fa-arrow-up-long tableicon"></i></span>
+                              <span><i class="fa-solid fa-arrow-down-long tableicon"></i></span>
+                            </div>
+                          </div>
+                        </th>
+                        <th class="p-2">
+                          <div class="row">
+                            <div class="col-md-6 col-sm-12"><b>IP</b></div>
+                            <div class="col-md-6 col-sm-12 text-md-end text-sm-center">
+                              <span><i class="fa-solid fa-arrow-up-long tableicon"></i></span>
+                              <span><i class="fa-solid fa-arrow-down-long tableicon"></i></span>
+                            </div>
+                          </div>
+                        </th>
+                        <th class="p-2">
+                          <div class="row">
+                            <div class="col-md-6 col-sm-12"><b>Date</b></div>
+                            <div class="col-md-6 col-sm-12 text-md-end text-sm-center">
+                              <span><i class="fa-solid fa-arrow-up-long tableicon"></i></span>
+                              <span><i class="fa-solid fa-arrow-down-long tableicon"></i></span>
+                            </div>
+                          </div>
+                        </th>
+                        <th class="p-2">
+                          <div class="row">
+                            <div class="col-md-6 col-sm-12"><b>Action</b></div>
+                            <div class="col-md-6 col-sm-12 text-md-end text-sm-center">
+                              <span><i class="fa-solid fa-arrow-up-long tableicon"></i></span>
+                              <span><i class="fa-solid fa-arrow-down-long tableicon"></i></span>
+                            </div>
+                          </div>
+                        </th>
+
+                      </tr>
+                    </thead>
+                    <tbody class="bgcolour">
+                      <tr>
+                        <td colspan="4" class="text-center p-2"> No data available in table </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="d-flex justify-content-between pt-1 p-2 font_Size">
+                  <div>
+                    Showing 0 to 0 of entries
+                  </div>
+                  <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                    <button type="button" class="border-1 bg-white p-2 font_Size text-secondary">
+                      Previous</button>
+                    <button type="button" class="border-1 bg-white p-2 font_Size text-secondary"> Next</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-2 ">
+            <div class="border border-1 border-secondary-subtle">
+              <div class="accordion" id="accordionExample">
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button bgcolour p-2 w-100 " type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      <div class="text-white d-flex fw-bold w-100 flex-wrap">
+                        <span class="bg bg-success p-2 m-0 rounded rounded-1">POST</span>
+                        <span class=" bg bg-warning p-2 m-0 rounded rounded-1 text-black ">SEND WAPP</span>
+                        <span class=" bg bg-danger p-2 m-0 rounded rounded-1">
+                          http://148.251.129.118/wapp/api/send</span>
+                      </div>
+                    </button>
+                  </h2>
+                  <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                      <div class="table-responsive">
+                        <table class="table table-sm ">
+                          <thead class="thead-dark ">
+
+                            <tr>
+                              <th class="bg-black text-white">ParameterName</th>
+                              <th class="bg-black text-white">Description</th>
+                              <th class="bg-black text-white">ParameterValue</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>apikey</td>
+                              <td>apikey genrated from above.</td>
+                              <td>67fd47ab51b34699a1822c669b5d3f99</td>
+                            </tr>
+                            <tr>
+                              <td>number</td>
+                              <td>10 digit mobile number.use comma for multiple number</td>
+                              <td>998899xxxx</td>
+                            </tr>
+                            <tr>
+                              <td>msg</td>
+                              <td>Message containt</td>
+                              <td>This is Test message</td>
+                            </tr>
+
+                            <tr class="thead-dark">
+                              <th colspan="3" class="bg-black text-white">Example:
+                                &nbsp;&nbsp;&nbsp; http://148.251.129.118/wapp/api/send?<span
+                                  class="bg-warning text-black"> apikey</span>=67fd47ab51b34699a1822c669b5d3f99<span
+                                  class="bg-warning text-black">&amp;mobile</span>=989898XXXX
+                                <span class="bg-warning text-black">&amp;msg</span>=testmsg
+                              </th>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button bgcolour p-2 w-100 collapsed" type="button"
+                      data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
+                      aria-controls="collapseTwo">
+                      <div class="text-white d-flex fw-bold w-100 flex-wrap">
+                        <span class="bg bg-success p-2 m-0 rounded rounded-1">POST</span>
+                        <span class=" bg bg-warning p-2 m-0 rounded rounded-1 text-black ">SEND SMS</span>
+                        <span class=" bg bg-danger p-2 m-0 rounded rounded-1"> http://148.251.129.118/api/sendsms</span>
+                      </div>
+                    </button>
+                  </h2>
+                  <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                      <div class="table-responsive">
+                        <table class="table table-sm ">
+                          <thead class="thead-dark">
+
+                            <tr>
+                              <th class="bg-black text-white">ParameterName</th>
+                              <th class="bg-black text-white">Description</th>
+                              <th class="bg-black text-white">ParameterValue</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>apikey</td>
+                              <td>apikey genrated from above.</td>
+                              <td>67fd47ab51b34699a1822c669b5d3f99</td>
+                            </tr>
+                            <tr>
+                              <td>number</td>
+                              <td>10 digit mobile number.use comma for multiple number</td>
+                              <td>998899xxxx</td>
+                            </tr>
+                            <tr>
+                              <td>sendername</td>
+                              <td>6 Alphabet SenderName</td>
+                              <td>ABCDEF</td>
+                            </tr>
+
+                            <tr>
+                              <td>msg</td>
+                              <td>Message containt</td>
+                              <td>This is Test message</td>
+                            </tr>
+
+                            <tr class="thead-dark">
+                              <th colspan="3" class="bg-black text-white">Example:
+                                &nbsp;&nbsp;&nbsp; http://148.251.129.118
+                                /api/sendsms?<span
+                                  class="bg-warning text-black">apikey</span>=67fd47ab51b34699a1822c669b5d3f99<span
+                                  class="bg-warning text-black">&amp;number</span>=989898XXXX<span
+                                  class="bg-warning text-black">&amp;sendername</span>=ABCDEF<span
+                                  class="bg-warning text-black">&amp;msg</span>=testmsg
+                              </th>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button collapsed bgcolour w-100 p-2" type="button"
+                      data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
+                      aria-controls="collapseThree">
+                      <div class="text-white d-flex fw-bold w-100 flex-wrap">
+                        <span class="bg bg-success p-2 m-0 rounded rounded-1">POST</span>
+                        <span class=" bg bg-warning p-2 m-0 rounded rounded-1 text-black ">SEND JSON BULKSMS</span>
+                        <span class=" bg bg-danger p-2 m-0 rounded rounded-1">
+                          http://148.251.129.118/api/sendbulksms</span>
+                      </div>
+                    </button>
+                  </h2>
+                  <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                      <div class="p-2">
+                        <hr>
+                        <div>
+                          <span class="bg-success text-white fw-bold p-1 rounded rounded-1">POST</span><span>
+                            http://148.251.129.118/api/sendbulksms</span>
+                        </div>
+                        <hr>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <footer class="app-footer d-flex flex-wrap align-items-center">
+          <div>
+            <a href="#"></a>
+            <span>© 2020-2021 .</span>
+          </div>
+          <div class="ms-auto">
+            <span>Powered by</span>
+          </div>
+        </footer>
+      </div>
+
+      <!--============================================ manageapikey-end======================================== -->
+    </div>
+    <!-- content-section-end -->
+  </div>
+  {% endif %}
+  <!-- main-section-start -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+body{
+padding: 0px;
+margin: 0px;
+box-sizing: border-box;
+font-family: 'Roboto', sans-serif !important;
+}
+.WAPPpage{
+background-color: #e4e5e6 !important;
+}
+.bgcolour{
+    background-color: #f0f3f5 !important;
+}
+.font_Size{
+    font-size: 13px !important;
+}
+.tableicon{
+    font-size: 9px !important;
+}
